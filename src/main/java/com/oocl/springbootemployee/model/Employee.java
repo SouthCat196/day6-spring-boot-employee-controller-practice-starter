@@ -1,13 +1,13 @@
 package com.oocl.springbootemployee.model;
 
 public class Employee {
-    private int id;
+    private Integer id;
     private String name;
-    private int age;
+    private Integer age;
     private Gender gender;
     private Double salary;
 
-    public Employee(int id, String name, int age, Gender gender, Double salary) {
+    public Employee(Integer id, String name, int age, Gender gender, Double salary) {
         this.id = id;
         this.name = name;
         this.age = age;
@@ -15,7 +15,7 @@ public class Employee {
         this.salary = salary;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -23,7 +23,7 @@ public class Employee {
         return name;
     }
 
-    public int getAge() {
+    public Integer getAge() {
         return age;
     }
 

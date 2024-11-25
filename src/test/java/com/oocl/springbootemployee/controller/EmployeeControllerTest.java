@@ -42,7 +42,6 @@ class EmployeeControllerTest {
         employeeRepository.createEmployee(new Employee(0, "Tom", 20, Gender.FEMALE, 8000.0));
         employeeRepository.createEmployee(new Employee(0, "Amy", 15, Gender.FEMALE, 7000.0));
         employeeRepository.createEmployee(new Employee(0, "Ben", 19, Gender.MALE, 5000.0));
-
     }
 
     @Test
@@ -71,7 +70,6 @@ class EmployeeControllerTest {
         // When & Then
         client.perform(MockMvcRequestBuilders.get("/employees/{id}", id))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-//                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(id));
                 .andExpect(MockMvcResultMatchers.content().json(employeeJson));
 
     }

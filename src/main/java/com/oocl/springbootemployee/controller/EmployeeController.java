@@ -23,7 +23,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/{id}")
-    public Employee getById(@PathVariable int id) {
+    public Employee getById(@PathVariable Integer id) {
         return employeeRepository.getById(id);
     }
 
@@ -36,6 +36,11 @@ public class EmployeeController {
     @ResponseStatus(code = HttpStatus.CREATED)
     public Employee createEmployee(@RequestBody Employee employee) {
         return employeeRepository.createEmployee(employee);
+    }
+
+    @PutMapping("/{id}")
+    public Employee updateEmployee(@PathVariable Integer id, @RequestBody EmployeeDto employeeDto) {
+        return employeeRepository.updateEmployee(id, employeeDto);
     }
 
 }
