@@ -43,9 +43,18 @@ class EmployeeControllerTest {
     @BeforeEach
     void setUp() {
         employeeRepository.getAll().clear();
-        employeeRepository.createEmployee(new Employee(0, "Tom", 20, Gender.FEMALE, 8000.0));
-        employeeRepository.createEmployee(new Employee(0, "Amy", 15, Gender.FEMALE, 7000.0));
-        employeeRepository.createEmployee(new Employee(0, "Ben", 19, Gender.MALE, 5000.0));
+        employeeRepository.createEmployee(new Employee(0, "Tom1", 20, Gender.FEMALE, 8000.0));
+        employeeRepository.createEmployee(new Employee(0, "Tom2", 15, Gender.FEMALE, 7000.0));
+        employeeRepository.createEmployee(new Employee(0, "Tom3", 19, Gender.MALE, 5000.0));
+        employeeRepository.createEmployee(new Employee(0, "Tom4", 19, Gender.MALE, 5000.0));
+        employeeRepository.createEmployee(new Employee(0, "Tom5", 19, Gender.MALE, 5000.0));
+        employeeRepository.createEmployee(new Employee(0, "Tom6", 19, Gender.MALE, 5000.0));
+        employeeRepository.createEmployee(new Employee(0, "Tom7", 19, Gender.MALE, 5000.0));
+        employeeRepository.createEmployee(new Employee(0, "Tom8", 19, Gender.MALE, 5000.0));
+        employeeRepository.createEmployee(new Employee(0, "Tom9", 19, Gender.MALE, 5000.0));
+        employeeRepository.createEmployee(new Employee(0, "Tom10", 19, Gender.MALE, 5000.0));
+        employeeRepository.createEmployee(new Employee(0, "Tom11", 19, Gender.MALE, 5000.0));
+        employeeRepository.createEmployee(new Employee(0, "Tom12", 19, Gender.MALE, 5000.0));
     }
 
     @AfterEach
@@ -63,7 +72,7 @@ class EmployeeControllerTest {
         // When & Then
         client.perform(MockMvcRequestBuilders.get("/employees"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(3)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(employeeList.size())))
                 .andExpect(MockMvcResultMatchers.content().json(employeeListJson));
 
     }
@@ -141,10 +150,33 @@ class EmployeeControllerTest {
         int id = 2;
 
         // When & Then
-        client.perform(MockMvcRequestBuilders.delete("/employees/" + id))
+        client.perform(MockMvcRequestBuilders.delete("/employees/{id}", id))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
         assertNull(employeeRepository.getById(id));
     }
+
+    @Test
+    void should_return_page_employee_when_get_page_employee() throws Exception {
+        // Given
+        int page = 2;
+        int size = 5;
+
+        // When & Then
+        client.perform(MockMvcRequestBuilders.get("/employees")
+                        .param("page", String.valueOf(page))
+                        .param("size", String.valueOf(size))
+                )
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(5)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(6))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].id").value(7))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[2].id").value(8))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[3].id").value(9))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[4].id").value(10))
+        ;
+
+    }
+
 
 }
 

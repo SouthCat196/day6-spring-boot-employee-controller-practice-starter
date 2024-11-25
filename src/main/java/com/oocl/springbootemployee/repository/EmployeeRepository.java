@@ -60,4 +60,11 @@ public class EmployeeRepository {
     public void resetSequence() {
         sequence = ONE;
     }
+
+    public List<Employee> getPageEmployee(int page, int size) {
+        return employeeList.stream()
+                .skip((long) (page - 1) * size)
+                .limit(size)
+                .toList();
+    }
 }
