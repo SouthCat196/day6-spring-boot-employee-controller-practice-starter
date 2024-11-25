@@ -33,7 +33,7 @@ public class EmployeeController {
     }
 
     @PostMapping
-    @ResponseStatus(code = HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.CREATED)
     public Employee createEmployee(@RequestBody Employee employee) {
         return employeeRepository.createEmployee(employee);
     }
@@ -41,6 +41,12 @@ public class EmployeeController {
     @PutMapping("/{id}")
     public Employee updateEmployee(@PathVariable Integer id, @RequestBody EmployeeDto employeeDto) {
         return employeeRepository.updateEmployee(id, employeeDto);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteEmployee(@PathVariable Integer id) {
+        employeeRepository.deleteEmployee(id);
     }
 
 }

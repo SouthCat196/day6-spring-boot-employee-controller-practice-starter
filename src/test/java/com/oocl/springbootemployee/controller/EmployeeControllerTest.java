@@ -3,6 +3,7 @@ package com.oocl.springbootemployee.controller;
 import com.oocl.springbootemployee.model.Employee;
 import com.oocl.springbootemployee.model.Gender;
 import com.oocl.springbootemployee.repository.EmployeeRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.event.annotation.AfterTestMethod;
+import org.springframework.test.context.event.annotation.BeforeTestMethod;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -18,6 +21,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -42,6 +46,11 @@ class EmployeeControllerTest {
         employeeRepository.createEmployee(new Employee(0, "Tom", 20, Gender.FEMALE, 8000.0));
         employeeRepository.createEmployee(new Employee(0, "Amy", 15, Gender.FEMALE, 7000.0));
         employeeRepository.createEmployee(new Employee(0, "Ben", 19, Gender.MALE, 5000.0));
+    }
+
+    @AfterEach
+    void clean() {
+        employeeRepository.resetSequence();
     }
 
     @Test
@@ -112,6 +121,7 @@ class EmployeeControllerTest {
         // Given
         int id = 1;
         Employee employee = employeeRepository.getById(id);
+        employeeRepository.getAll().stream().forEach(employee1 -> System.out.println(employee1.getId()));
         employee.setAge(123123);
         employee.setSalary(321321321.0);
         String employeeJson = employeeJacksonTester.write(employee).getJson();
@@ -133,6 +143,7 @@ class EmployeeControllerTest {
         // When & Then
         client.perform(MockMvcRequestBuilders.delete("/employees/" + id))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
+        assertNull(employeeRepository.getById(id));
     }
 
 }

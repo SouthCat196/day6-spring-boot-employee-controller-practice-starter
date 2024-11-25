@@ -25,7 +25,7 @@ public class EmployeeRepository {
         return employeeList.stream()
                 .filter(employee -> employee.getId() == id)
                 .findFirst()
-                .orElseThrow();
+                .orElse(null);
     }
 
     public List<Employee> getByGender(Gender gender) {
@@ -51,5 +51,13 @@ public class EmployeeRepository {
             return employee.get();
         }
         return null;
+    }
+
+    public void deleteEmployee(Integer id) {
+        employeeList.removeIf(employee -> employee.getId().equals(id));
+    }
+
+    public void resetSequence() {
+        sequence = ONE;
     }
 }
