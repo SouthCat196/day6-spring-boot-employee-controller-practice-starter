@@ -1,6 +1,7 @@
 package com.oocl.springbootemployee.controller;
 
 import com.oocl.springbootemployee.model.Employee;
+import com.oocl.springbootemployee.model.EmployeeDto;
 import com.oocl.springbootemployee.model.Gender;
 import com.oocl.springbootemployee.repository.EmployeeRepository;
 import org.springframework.http.HttpStatus;

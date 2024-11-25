@@ -1,6 +1,6 @@
 package com.oocl.springbootemployee.repository;
 
-import com.oocl.springbootemployee.controller.EmployeeDto;
+import com.oocl.springbootemployee.model.EmployeeDto;
 import com.oocl.springbootemployee.model.Employee;
 import com.oocl.springbootemployee.model.Gender;
 import org.springframework.stereotype.Repository;
