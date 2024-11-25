@@ -10,9 +10,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static com.oocl.springbootemployee.constant.EmployeeConstant.ONE;
+
 @Repository
 public class EmployeeRepository {
-    public static final int ONE = 1;
     private final List<Employee> employeeList = new ArrayList<>();
 
     private int sequence = ONE;
