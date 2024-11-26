@@ -56,7 +56,7 @@ class CompanyControllerTest {
         String companyVOsJSON = jacksonTester.write(companyVOs).getJson();
 
         // When & Then
-        client.perform(MockMvcRequestBuilders.get("/company"))
+        client.perform(MockMvcRequestBuilders.get("/companies"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(companyVOs.size())))
                 .andExpect(MockMvcResultMatchers.content().json(companyVOsJSON));

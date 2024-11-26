@@ -7,15 +7,12 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
-
-import static com.oocl.springbootemployee.constant.EmployeeConstant.ONE;
 
 @Repository
 public class EmployeeRepository {
     private final List<Employee> employeeList = new ArrayList<>();
-
-    private int sequence = ONE;
 
     public List<Employee> getAll() {
         return employeeList;
@@ -35,25 +32,28 @@ public class EmployeeRepository {
     }
 
     public Employee createEmployee(Employee employee) {
-        employee.setId(sequence);
-        sequence += ONE;
+        employee.setId(employeeList.stream()
+                .mapToInt(Employee::getId)
+                .max()
+                .orElse(0) + 1);
         employeeList.add(employee);
         return employee;
     }
 
     public Employee updateEmployee(Integer id, EmployeeDto employeeDto) {
-        Employee employee = getById(id);
-        employee.setAge(employeeDto.getAge());
-        employee.setSalary(employeeDto.getSalary());
-        return employee;
+        Optional<Employee> employee = employeeList.stream()
+                .filter(employeeItem -> employeeItem.getId().equals(id))
+                .findFirst();
+        if (employee.isPresent()) {
+            employee.get().setAge(employeeDto.getAge());
+            employee.get().setSalary(employeeDto.getSalary());
+            return employee.get();
+        }
+        return null;
     }
 
     public void deleteEmployee(Integer id) {
         employeeList.removeIf(employee -> employee.getId().equals(id));
-    }
-
-    public void resetSequence() {
-        sequence = ONE;
     }
 
     public List<Employee> getPageEmployee(int page, int size) {

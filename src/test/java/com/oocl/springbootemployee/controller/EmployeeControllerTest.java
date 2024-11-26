@@ -3,7 +3,6 @@ package com.oocl.springbootemployee.controller;
 import com.oocl.springbootemployee.model.Employee;
 import com.oocl.springbootemployee.model.Gender;
 import com.oocl.springbootemployee.repository.EmployeeRepository;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,11 +54,6 @@ class EmployeeControllerTest {
         employeeRepository.createEmployee(new Employee(0, "Tom12", 19, Gender.MALE, 5000.0));
     }
 
-    @AfterEach
-    void clean() {
-        employeeRepository.resetSequence();
-    }
-
     @Test
     void should_return_employees_when_get_all_given_emplpyees() throws Exception {
         // Given
@@ -72,12 +66,12 @@ class EmployeeControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(employeeList.size())))
                 .andExpect(MockMvcResultMatchers.content().json(employeeListJson));
-
     }
 
     @Test
     void should_return_employee_when_get_employee_by_id() throws Exception {
         // Given
+        employeeRepository.getAll().stream().forEach(employee -> System.out.println(employee.getId()));
         final Employee employee = employeeRepository.getById(3);
         int id = employee.getId();
 
@@ -127,18 +121,22 @@ class EmployeeControllerTest {
     void should_update_employee_when_update_employee() throws Exception {
         // Given
         int id = 1;
-        Employee employee = employeeRepository.getById(id);
-        employee.setAge(123123);
-        employee.setSalary(321321321.0);
-        String employeeJson = employeeJacksonTester.write(employee).getJson();
+        String updateEmployeeJson = "    {\n" +
+                "        \"age\": 20,\n" +
+                "        \"salary\": 8000.0\n" +
+                "    }";
+
+        List<Employee> byId = employeeRepository.getAll();
+        byId.stream()
+                .forEach(employee1 -> System.out.println(employee1.getId()));
 
         // When & Then
-        client.perform(MockMvcRequestBuilders.put("/employees/{id}", employee.getId())
+        client.perform(MockMvcRequestBuilders.put("/employees/{id}", id)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(employeeJson)
+                        .content(updateEmployeeJson)
                 )
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().json(employeeJson));
+                .andExpect(MockMvcResultMatchers.content().json(updateEmployeeJson));
     }
 
     @Test

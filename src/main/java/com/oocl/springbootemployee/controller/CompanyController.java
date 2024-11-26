@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/company")
+@RequestMapping("/companies")
 public class CompanyController {
 
 
