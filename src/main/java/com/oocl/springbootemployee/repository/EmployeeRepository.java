@@ -1,13 +1,12 @@
 package com.oocl.springbootemployee.repository;
 
-import com.oocl.springbootemployee.model.EmployeeDto;
 import com.oocl.springbootemployee.model.Employee;
+import com.oocl.springbootemployee.model.EmployeeDto;
 import com.oocl.springbootemployee.model.Gender;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.oocl.springbootemployee.constant.EmployeeConstant.ONE;
@@ -43,15 +42,10 @@ public class EmployeeRepository {
     }
 
     public Employee updateEmployee(Integer id, EmployeeDto employeeDto) {
-        Optional<Employee> employee = employeeList.stream()
-                .filter(employeeItem -> employeeItem.getId().equals(id))
-                .findFirst();
-        if (employee.isPresent()) {
-            employee.get().setAge(employeeDto.getAge());
-            employee.get().setSalary(employeeDto.getSalary());
-            return employee.get();
-        }
-        return null;
+        Employee employee = getById(id);
+        employee.setAge(employeeDto.getAge());
+        employee.setSalary(employeeDto.getSalary());
+        return employee;
     }
 
     public void deleteEmployee(Integer id) {

@@ -12,8 +12,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.event.annotation.AfterTestMethod;
-import org.springframework.test.context.event.annotation.BeforeTestMethod;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -130,7 +128,6 @@ class EmployeeControllerTest {
         // Given
         int id = 1;
         Employee employee = employeeRepository.getById(id);
-        employeeRepository.getAll().stream().forEach(employee1 -> System.out.println(employee1.getId()));
         employee.setAge(123123);
         employee.setSalary(321321321.0);
         String employeeJson = employeeJacksonTester.write(employee).getJson();
